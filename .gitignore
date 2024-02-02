@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+
+# Arquivos de compilação TypeScript
+*.js
+*.js.map
+*.d.ts
+
+# Arquivos de compilação
+build/
+dist/
+
+# Arquivos de configuração do IDE (por exemplo, Visual Studio Code)
+.vscode/
+
+# Arquivos de configuração do ambiente (por exemplo, .env.local)
+.env*
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+
+# Arquivos de build de CI
+build/
+
+# Dependências específicas do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+
+# Arquivos de compilação de CSS (se você estiver usando preprocessadores como Sass)
+*.css
+*.scss
+*.sass
+
+# Dependências do gerenciador de pacotes
+/yarn-error.log
+npm-debug.log
