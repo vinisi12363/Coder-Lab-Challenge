@@ -17,6 +17,8 @@ export class ProductsController {
 
   @Post()
   async create(@Body() createProductDto: CreateProductDto) {
+    //TODO tem que verificar se existe categoria e se já existe produto
+    //TODO não pode criar produto com categoria que não existe
     return await this.productsService.create(createProductDto);
   }
 

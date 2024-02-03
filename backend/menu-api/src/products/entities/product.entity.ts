@@ -14,7 +14,7 @@ export class Product {
   @Column('int')
   qty: number;
 
-  @Column('int')
+  @Column({ type: 'double precision' })
   price: number;
 
   @Column('text')
