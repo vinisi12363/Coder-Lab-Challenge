@@ -14,28 +14,31 @@ export class ProductsService {
     private readonly entityManager: EntityManager,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto): Promise<Product> {
     const product = new Product(createProductDto);
     return await this.entityManager.save(product);
   }
 
-  async findAll() {
+  async findAll(): Promise<Product[]> {
     return await this.productRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Product> {
     const product = await this.productRepository.findOne({
       where: { id },
     });
     return product;
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto) {
+  async update(
+    id: number,
+    updateProductDto: UpdateProductDto,
+  ): Promise<object> {
     const updatedProduct = new Product(updateProductDto);
     return await this.productRepository.update(id, updatedProduct);
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<object> {
     return await this.productRepository.delete(id);
   }
 }
