@@ -2,6 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
+import { HttpException, HttpStatus } from '@nestjs/common';
 export class AuthService {
   constructor(
     @InjectRepository(User)
@@ -20,5 +21,9 @@ export class AuthService {
         access_token: await this.jwtService.signAsync(payload),
       };
     }
+    throw new HttpException(
+      'user Not Found or incorrect password',
+      HttpStatus.BAD_REQUEST,
+    );
   }
 }
