@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './DTO/createUserDto';
-import { Post, Body, ValidationPipe } from '@nestjs/common';
+import { Post, Get, Body, ValidationPipe } from '@nestjs/common';
 import { Public } from 'src/auth/public-decorator';
 
 @Controller('user')
@@ -12,5 +12,10 @@ export class UserController {
   @Post()
   async signUp(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
+  }
+  @Public()
+  @Get()
+  async getUserByUsername(@Param('username') username: string) {
+    return await this.userService.findOneByUsername(username);
   }
 }

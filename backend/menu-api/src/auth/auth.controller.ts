@@ -20,7 +20,7 @@ export class AuthController {
   @Post('login')
   async login(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     return await this.authService.signIn(
-      createUserDto.name,
+      createUserDto.username,
       createUserDto.password,
     );
   }
