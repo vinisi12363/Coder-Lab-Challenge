@@ -1,11 +1,25 @@
-import './header.scss';
+import "./header.scss"; 
+import { useContextUser } from "../../Contexts/UserContext";
+import { HeaderDefault } from "../HeaderDefault/DefaultHeadet";
+import {HeaderWithUSer} from "../HeaderWithUsername/HeaderWithUSer";
+type HeaderProps = {
+    setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setSignUpModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    
+}
 
-export default function Header(){
-    return (
-        <div className="headerInfo">
-            <div className="headerLogo">
-                 <p>Vini Fast Food</p>
-            </div>
-        </div>
-    )
+
+export const  Header:React.FC<HeaderProps> = ({setModalIsOpen, setSignUpModalOpen}) => {
+  const {user} = useContextUser();
+  return (
+    <>
+        {user?.name ? 
+                  <HeaderWithUSer></HeaderWithUSer>
+           : 
+           <HeaderDefault setModalIsOpen={setModalIsOpen} setSignUpModalOpen={setSignUpModalOpen}></HeaderDefault>
+         
+                   
+        }
+     </>
+  );
 }

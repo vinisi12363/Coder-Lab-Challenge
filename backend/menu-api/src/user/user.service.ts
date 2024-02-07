@@ -14,14 +14,14 @@ export class UserService {
   ) {}
   async create(createUserDto: CreateUserDto): Promise<User> {
     const newUser = new User(createUserDto);
-    const result = await this.findOne(newUser.name);
+    const result = await this.findOneByUsername(newUser.username);
     if (result) {
-      throw new Error.ConflictUserException(newUser.name);
+      throw new Error.ConflictUserException(newUser.username);
     }
     return await this.entityManager.save(newUser);
   }
-  async findOne(name: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { name } });
+  async findOneByUsername(username: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { username } });
     return user;
   }
 }

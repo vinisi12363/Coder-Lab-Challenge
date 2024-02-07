@@ -11,15 +11,19 @@ export class AuthService {
   ) {}
 
   async signIn(
-    name: string,
+    username: string,
     password: string,
   ): Promise<{ access_token: string }> {
-    const user = await this.userRepository.findOne({ where: { name } });
+    const user = await this.userRepository.findOne({ where: { username } });
     if (user && user.password === password) {
       const payload = { name: user.name, sub: user.id };
-      return {
+      const data = {
+        id: user.id,
+        username: user.username,
+        name: user.name,
         access_token: await this.jwtService.signAsync(payload),
       };
+      return data;
     }
     throw new HttpException(
       'user Not Found or incorrect password',

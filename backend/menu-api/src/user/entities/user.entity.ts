@@ -9,6 +9,9 @@ export class User {
   name: string;
 
   @Column({ length: 500, nullable: false })
+  username: string;
+
+  @Column({ length: 500, nullable: false })
   password: string;
 
   constructor(user: Partial<User>) {

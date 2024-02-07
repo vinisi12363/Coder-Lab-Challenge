@@ -2,7 +2,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class ConflictUserException extends HttpException {
   constructor(name?: string) {
-    const message = `This user: ${name} already exists in the database: `;
+    const message = `This username: ${name} already exists in the database: `;
     super(message, HttpStatus.CONFLICT);
   }
 }
