@@ -1,6 +1,7 @@
-import "./header.scss";
-import Logo from "../../assets/logo.png";
-
+import "./header.scss"; 
+import { useContextUser } from "../../Contexts/UserContext";
+import { HeaderDefault } from "../HeaderDefault/DefaultHeadet";
+import {HeaderWithUSer} from "../HeaderWithUsername/HeaderWithUSer";
 type HeaderProps = {
     setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setSignUpModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -9,18 +10,16 @@ type HeaderProps = {
 
 
 export const  Header:React.FC<HeaderProps> = ({setModalIsOpen, setSignUpModalOpen}) => {
+  const {user} = useContextUser();
   return (
-    <div className="headerInfo">
-      <div className="headerLogo">
-        <img className="imgLogo" src={Logo} alt="Vini Fast Food"></img>
-      </div>
-      <div className="headerOptions">
-        <p className='linkP' onClick={()=>{setModalIsOpen(true)}}>Logar</p>
-
-        <p>{"   ou  "}</p>
-
-        <p className='linkP' onClick={()=>{setSignUpModalOpen(true)}}>Cadastrar-se</p>
-      </div>
-    </div>
+    <>
+        {user?.name ? 
+                  <HeaderWithUSer></HeaderWithUSer>
+           : 
+           <HeaderDefault setModalIsOpen={setModalIsOpen} setSignUpModalOpen={setSignUpModalOpen}></HeaderDefault>
+         
+                   
+        }
+     </>
   );
 }
