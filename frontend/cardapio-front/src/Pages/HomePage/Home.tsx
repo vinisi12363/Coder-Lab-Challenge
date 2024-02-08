@@ -8,21 +8,22 @@ import { SignUpComponent } from "../../Components/SignUpModal/SignUpComponent";
 import { useState, useEffect} from "react";
 import { useContextUser } from "../../Contexts/UserContext";
 import { useLocalStorage } from "../../Hooks/useLocalStorage";
-
+import { useContextCategory } from "../../Contexts/CategoryContext";
 export default function Home() {
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [signUpModalOpen , setSignUpModalOpen] = useState<boolean>(false);
   const {setUpUser} = useContextUser();
-  
+  const {categories, fetchCategories} = useContextCategory();
   useEffect(()=>{
+    fetchCategories();
     const user = useLocalStorage.getLocalStorage("user");
     if(user){
       setUpUser(user);
     }
   },[]);
-
-  return (
+ console.log(categories);
+  return (  
    
     <MainContainer>
          <Header setModalIsOpen={setModalIsOpen} setSignUpModalOpen={setSignUpModalOpen} ></Header>
