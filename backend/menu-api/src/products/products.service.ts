@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import * as Error from './exceptions/products.exceptions';
 import { Category } from 'src/categories/entities/category.entity';
 import { In } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 @Injectable()
 export class ProductsService {
   constructor(
@@ -20,6 +21,7 @@ export class ProductsService {
     private readonly entityManager: EntityManager,
   ) {}
 
+  @Transactional()
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const product = new Product(createProductDto);
     await this.categoryIdsCheck(product.categories);
@@ -64,6 +66,7 @@ export class ProductsService {
     }
   }
 
+  @Transactional()
   async update(
     id: number,
     updateProductDto: UpdateProductDto,
@@ -79,7 +82,7 @@ export class ProductsService {
     }
     return result;
   }
-
+  @Transactional()
   async remove(id: number): Promise<object> {
     const findProduct = await this.productRepository.findOne({ where: { id } });
     if (!findProduct) {

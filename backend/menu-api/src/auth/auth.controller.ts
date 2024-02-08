@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-import { CreateUserDto } from 'src/user/DTO/createUserDto';
+import { AuthUserDto } from './DTO/AuthUserDto';
 import { Public } from './public-decorator';
 
 @Controller('auth')
@@ -18,10 +18,10 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  async login(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+  async login(@Body(ValidationPipe) authUserDto: AuthUserDto) {
     return await this.authService.signIn(
-      createUserDto.username,
-      createUserDto.password,
+      authUserDto.username,
+      authUserDto.password,
     );
   }
 

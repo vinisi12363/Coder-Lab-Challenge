@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './DTO/createUserDto';
 import * as Error from './exceptions/UserExceptions';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Transactional } from 'typeorm-transactional';
 @Injectable()
 export class UserService {
   constructor(
@@ -12,6 +13,8 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     private readonly entityManager: EntityManager,
   ) {}
+
+  @Transactional()
   async create(createUserDto: CreateUserDto): Promise<User> {
     const newUser = new User(createUserDto);
     const result = await this.findOneByUsername(newUser.username);
