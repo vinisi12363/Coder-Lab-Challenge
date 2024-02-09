@@ -3,7 +3,6 @@ import './SigninModal.scss';
 import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import { UserApi } from '../../Api/UserApi';
-import { UseLowerCase } from '../../Hooks/useLowerCase';
 import { useLocalStorage } from '../../Hooks/useLocalStorage';
 import { useContextUser } from '../../Contexts/UserContext';
 type SignInComponentProps = {
@@ -13,7 +12,7 @@ type SignInComponentProps = {
 
 export const SignInComponent: React.FC<SignInComponentProps> = ({modalIsOpen, setModalIsOpen})=>{
     const [disabled, setDisabled] = useState<boolean>(false);
-    const {user, setUpUser} = useContextUser();
+    const {setUpUser} = useContextUser();
     const [displayMode, setDisplayMode] = useState<string>('none');
     const [userName, setUserName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
