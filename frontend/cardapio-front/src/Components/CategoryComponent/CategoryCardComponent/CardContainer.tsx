@@ -26,16 +26,17 @@ export const CardContainerArea = () => {
                         key={category.id}
                         className="productCardContainer"
                         onClick={() => {
-                         chooseCategory(category.name);
+                         chooseCategory(category.id);
                         }}
                     >
                             <div className="CardArea">
-                                <img src={
-                                    category.name === 'Massas' ? MassasImg :
-                                    category.name === 'Pizza' ? PizzaImg :
-                                    category.name === 'Bebidas' ? BebidasImg : '' } 
+                                <img 
+                                    src={
+                                        category.name === 'Massas' ? MassasImg :
+                                        category.name === 'Pizza' ? PizzaImg :
+                                        category.name === 'Bebidas' ? BebidasImg : '' 
+                                     } 
                                     alt={category.name}>
-
                                 </img>
                             </div>
                             <div className="productTitle">

@@ -2,6 +2,8 @@ import "./header.scss";
 import { useContextUser } from "../../Contexts/UserContext";
 import { HeaderDefault } from "../HeaderDefault/DefaultHeadet";
 import {HeaderWithUSer} from "../HeaderWithUsername/HeaderWithUSer";
+import { useLocalStorage } from "../../Hooks/useLocalStorage";
+
 type HeaderProps = {
     setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setSignUpModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -10,11 +12,13 @@ type HeaderProps = {
 
 
 export const  Header:React.FC<HeaderProps> = ({setModalIsOpen, setSignUpModalOpen}) => {
-  const {user} = useContextUser();
+  const {user} = useContextUser();  
+  const userLocalStorage = useLocalStorage.getLocalStorage("user");
+  
  
   return (
     <>
-        {user?.name !== undefined ? 
+        {userLocalStorage?.name !== undefined ? 
                   <HeaderWithUSer></HeaderWithUSer>
            : 
            <HeaderDefault setModalIsOpen={setModalIsOpen} setSignUpModalOpen={setSignUpModalOpen}></HeaderDefault>

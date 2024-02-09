@@ -3,8 +3,8 @@ import { Category } from "../Types/Category";
 import { CategoryApi } from "../Api/CategoryApi";
 
 interface categoryContextType {
-  category: string | null;
-  chooseCategory: (category: string) => void;
+  categoryId: number | null;
+  chooseCategory: (categoryId: number) => void;
   categories: Category[];
   fetchCategories: () => void;
 }
@@ -17,11 +17,11 @@ const categoryContext = createContext<categoryContextType | undefined>(
 );
 
 const CategoryProvider: React.FC<CategoryProviderProps> = ({ children }) => {
-  const [category, setCategory] = useState<string | null>();
+  const [categoryId, setCategoryId] = useState<number | null>();
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const chooseCategory = (category: string) => {
-    setCategory(category);
+  const chooseCategory = (categoryId: number) => {
+    setCategoryId(categoryId);
   };
   const fetchCategories = async () => {
     const result = await CategoryApi.getAllCategories();
@@ -30,7 +30,7 @@ const CategoryProvider: React.FC<CategoryProviderProps> = ({ children }) => {
 
   return (
     <categoryContext.Provider
-      value={{ category: category || null, chooseCategory, categories, fetchCategories}}
+      value={{ categoryId: categoryId || null, chooseCategory, categories, fetchCategories}}
     >
       {children}
     </categoryContext.Provider>

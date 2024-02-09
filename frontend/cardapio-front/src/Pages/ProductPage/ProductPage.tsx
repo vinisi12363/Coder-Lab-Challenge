@@ -1,9 +1,16 @@
+import { MainContainer } from "../../Components/MainContainer/MainContainer"
+import { HeaderWithUSer } from "../../Components/HeaderWithUsername/HeaderWithUSer"
+import { FormProduct }  from "../../Components/ProductsPageComponents/AddProductComponent/FormProduct";
 
 export default function ProductPage(){
     return (
-        <div>
-            <h1>Register Product</h1>
-        </div>
+        <MainContainer>
+                <HeaderWithUSer></HeaderWithUSer>
+                  <div>
+                    <FormProduct></FormProduct>
+                  </div>
+        </MainContainer>
+      
     )
 
 }
