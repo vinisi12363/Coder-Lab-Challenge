@@ -11,9 +11,10 @@ type HeaderProps = {
 
 export const  Header:React.FC<HeaderProps> = ({setModalIsOpen, setSignUpModalOpen}) => {
   const {user} = useContextUser();
+ 
   return (
     <>
-        {user?.name ? 
+        {user?.name !== undefined ? 
                   <HeaderWithUSer></HeaderWithUSer>
            : 
            <HeaderDefault setModalIsOpen={setModalIsOpen} setSignUpModalOpen={setSignUpModalOpen}></HeaderDefault>

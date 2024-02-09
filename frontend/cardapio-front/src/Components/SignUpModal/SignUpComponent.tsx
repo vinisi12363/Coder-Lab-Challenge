@@ -65,9 +65,11 @@ export const SignUpComponent: React.FC<SignUpComponentProps> = ({modalIsOpen, se
                 console.log(error);
                 if(error.request.status === 409){
                    toast.error('ERRO! Usuário já cadastrado');
-                }else if (error.request.status === 400 || 404){
+                }else if (error.request.status === 400){
                    toast.error(error.request.response);
-                }else if (error.request.status === 500){
+                }else if (error.request.status === 404){
+                    toast.error(error.request.response);
+                 }else if (error.request.status === 500){
                    toast.error('Erro ao cadastrar usuário');
                 }
             }

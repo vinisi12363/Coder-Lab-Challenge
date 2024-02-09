@@ -6,23 +6,26 @@ import { ProductComponent } from "../../Components/ProductComponent/ProductConta
 import { SignInComponent } from "../../Components/SignInModal/SignInComponent";
 import { SignUpComponent } from "../../Components/SignUpModal/SignUpComponent";
 import { useState, useEffect} from "react";
-import { useContextUser } from "../../Contexts/UserContext";
-import { useLocalStorage } from "../../Hooks/useLocalStorage";
 import { useContextCategory } from "../../Contexts/CategoryContext";
+import { useLocalStorage } from "../../Hooks/useLocalStorage";
 export default function Home() {
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [signUpModalOpen , setSignUpModalOpen] = useState<boolean>(false);
-  const {setUpUser} = useContextUser();
   const {categories, fetchCategories} = useContextCategory();
+  const categoriesLocalStorage = useLocalStorage.getLocalStorage("categories");
+ 
   useEffect(()=>{
-    fetchCategories();
-    const user = useLocalStorage.getLocalStorage("user");
-    if(user){
-      setUpUser(user);
+    if(!categories.length){
+      fetchCategories();
     }
-  },[]);
- console.log(categories);
+  },);
+  useEffect(()=>{
+    if ((!categoriesLocalStorage || categoriesLocalStorage.length === 0) && categories.length > 0){
+      useLocalStorage.setLocalStorage("categories", categories);
+    }
+  },);
+
   return (  
    
     <MainContainer>
