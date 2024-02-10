@@ -2,7 +2,7 @@ import { Title } from "../../../Title";
 import { Subtitle } from "../../../Subtitle";
 import './ProductComponentStyle.scss';
 import { useLocalStorage } from "../../../../Hooks/useLocalStorage";
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 import { ProductApi } from "../../../../Api/ProductApi";
 import { toast } from "react-toastify";
 import { useContextUser } from "../../../../Contexts/UserContext";
@@ -17,15 +17,22 @@ export const DeleteProductComponent = () => {
     const  storedUser = useLocalStorage.getLocalStorage("user");
     const productsStored = useLocalStorage.getLocalStorage("products");
     const [disabled, setDisabled] = useState(false);
-   
-    const changeToDelete = async ()=>{
+    useEffect(() => {
+        if (!productsStored || productsStored.length === 0){
+            useLocalStorage.setLocalStorage("products", products);
+        }
+        fetchProducts();
+    },[]);
+
+    const changeToDelete = async (id:number)=>{
         setDisabled(true);
-        if (productId !== null){
+      
+        if (id !== null){
             
             const confirmed = window.confirm("Tem certeza de que deseja excluir este item?");
             if (confirmed){
                 try {
-                    const result = await ProductApi.deleteProduct(productId, storedUser?.token);
+                    const result = await ProductApi.deleteProduct(id, storedUser?.token);
                     if (result){
                         toast.success('Produto deletado com sucesso!');
                         useLocalStorage.deleteLocalStorage("products");
@@ -48,6 +55,7 @@ export const DeleteProductComponent = () => {
         }
         
     }
+ 
    
      return (
         <div className='ProductContainerEdit'>
@@ -67,8 +75,8 @@ export const DeleteProductComponent = () => {
                                     <h2 className="CardTitle">{product.name}</h2>
                                     <p className="CardPrice">{`R$${product.price}0`}</p>
                                     <button disabled={disabled} className="deleteButton"  onClick={()=>{ 
-                                        setProductId(product.id);
-                                        changeToDelete()}}> <IoTrashBin size={"40"} color="white"></IoTrashBin></button>
+                                        changeToDelete(product.id)
+                                        }}> <IoTrashBin size={"40"} color="white"></IoTrashBin></button>
                                 </div>
                             </div>
                         );
