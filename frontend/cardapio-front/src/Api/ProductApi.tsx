@@ -38,7 +38,7 @@ const updateProduct = async (id: string, product: Product, token:string) => {
   
 }
 
-const deleteProduct = async (id: string , token:string) => {
+const deleteProduct = async (id: number , token:string) => {
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };

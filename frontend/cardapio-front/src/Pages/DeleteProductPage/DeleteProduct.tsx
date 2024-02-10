@@ -1,9 +1,11 @@
-
+import { MainContainer } from "../../Components/MainContainer/MainContainer";
+import { HeaderWithUSer } from "../../Components/HeaderWithUsername/HeaderWithUSer";
+import { DeleteProductComponent } from "../../Components/ProductsPageComponents/DeleteProduct/ProductComponent/ProductDeleteContainer";
 export default function DeleteProductPage(){
     return (
-        <div>
-            <h1>Delete Product</h1>
-        </div>
+        <MainContainer>
+        <HeaderWithUSer></HeaderWithUSer>
+        <DeleteProductComponent></DeleteProductComponent>
+        </MainContainer>
     )
-
 }
