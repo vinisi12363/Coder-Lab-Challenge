@@ -1,33 +1,57 @@
-import './header.scss';
+import "./header.scss";
 import Logo from "../../assets/logo.png";
 import { useContextUser } from "../../Contexts/UserContext";
-import { Link } from 'react-router-dom';
-
+import { useLocalStorage } from "../../Hooks/useLocalStorage";
+import { Link } from "react-router-dom";
 
 export const HeaderWithUSer: React.FC = () => {
-    const {user, setUpUser} = useContextUser();
-    const logout = () => {
-        setUpUser({name: '', token: ''})
-        localStorage.removeItem('user');
-        window.location.reload();
-    }
-    return(
-        <div className="headerInfo">
-        <div className="headerLogo">
+  const { setUpUser } = useContextUser();
+  const userLocalStorage = useLocalStorage.getLocalStorage("user");
+
+  const logout = () => {
+    setUpUser({ name: "", token: "" });
+    useLocalStorage.deleteLocalStorage("user");
+    useLocalStorage.deleteLocalStorage("categories");
+    useLocalStorage.deleteLocalStorage("products");
+    window.location.reload();
+  };
+
+  return (
+    <div className="headerInfo">
+      <div className="headerLogo">
+        <Link className="linkPWUser" to={"/"}>
           <img className="imgLogo" src={Logo} alt="Vini Fast Food"></img>
-        </div>
-        <div className="headerOptions">
-          <p>{`Bem Vindo(a): ${user?.name}`} </p>
-
-          
-
-          <Link to={'/produtos'}>
-                <p className='linkP' onClick={()=>{}}>Cadastrar Produto</p>
-          </Link>
-
-           <p className='linkP' onClick={()=>{logout()}}>Sair</p>
-        </div>
+        </Link>
       </div>
-    );
 
-}
+      <div className="headerOptionsWUser">
+        <p className="">{`Bem Vindo(a): ${userLocalStorage?.name}`} </p>
+
+        <Link className="linkPWUser" to={"/produtos/cadastrar"}>
+          <p className="linkP" onClick={() => {}}>
+            Cadastrar Produto
+          </p>
+        </Link>
+        <Link className="linkPWUser" to={"/produtos/editar"}>
+          <p className="linkP" onClick={() => {}}>
+            Editar Produto
+          </p>
+        </Link>
+        <Link className="linkPWUser" to={"/produtos/deletar"}>
+          <p className="linkP" onClick={() => {}}>
+            Deletar Produto
+          </p>
+        </Link>
+
+        <p
+          className="linkPWUser"
+          onClick={() => {
+            logout();
+          }}
+        >
+          Sair
+        </p>
+      </div>
+    </div>
+  );
+};

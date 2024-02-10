@@ -43,7 +43,8 @@ export class ProductsController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateProductDto: UpdateProductDto,
   ) {
-    return await this.productsService.update(id, updateProductDto);
+    const result = await this.productsService.update(id, updateProductDto);
+    return result;
   }
 
   @UseGuards(AuthGuard)

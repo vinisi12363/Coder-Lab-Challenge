@@ -1,31 +1,33 @@
-import { Title } from "../Title";
-import { Subtitle } from "../Subtitle";
+import { Title } from "../../../Title";
+import { Subtitle } from "../../../Subtitle";
 import './ProductComponentStyle.scss';
-import { useLocalStorage } from "../../Hooks/useLocalStorage";
+import { useLocalStorage } from "../../../../Hooks/useLocalStorage";
 import { useEffect, useState } from "react";
-import { useContextCategory } from "../../Contexts/CategoryContext";
-import { useContextProducts } from "../../Contexts/ProductContext";
+import { useContextCategory } from "../../../../Contexts/CategoryContext";
+import { useContextProducts } from "../../../../Contexts/ProductContext";
 
 
-export const ProductComponent = () => {
+export const EditProductComponent = () => {
     const { categoryId } = useContextCategory();
-    const [storedProducts, setStoredProducts ] = useState<any>();
-    const { products, fetchProducts} = useContextProducts();
+    const [storedProducts, setStoredProducts] = useState<any>();
+    const { selectedProduct,chooseProduct, products} = useContextProducts();
+    
     useEffect(() => {
         if(!storedProducts || storedProducts.length === 0){
             setStoredProducts(useLocalStorage.getLocalStorage("products"));
         }
-        fetchProducts();
     }, []);   
      return (
-        <div className='ProductContainer'>
+        <div className='ProductContainerEdit'>
             <Title text="Produtos" textColor="black" textSize="35px" />
-            <Subtitle text={"Escolha o produto desejado"} textColor="black" textSize="25px" />
+            <Subtitle text={"Escolha o produto desejado:"} textColor="black" textSize="25px" />
             <div className="ContainerCenter">
-                <div className='ProductCardArea'>
+                <div className='ProductCardAreaEdit' >
                     {products?.map((product: any) => {
                         return (
-                            <div className={`Card ${categoryId !== null && (product.categories.includes(categoryId) ? 'isSelected' : 'isUnselected')}`} key={product.id} >
+                            <div className={`Card ${product.id === selectedProduct?.id? 'verde' :'' } ${categoryId !== null && (product.categories.includes(categoryId) ? 'isSelected' : 'isUnselected')}`} key={product.id} 
+                            onClick={()=>(chooseProduct(product))}
+                            >
                                 <div className="CardImage">
                                     <img src={product.photo} alt="product img"></img>
                                 </div>

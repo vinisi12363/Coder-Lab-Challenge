@@ -12,13 +12,20 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     private readonly entityManager: EntityManager,
   ) {}
+
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = new User(createUserDto);
-    const result = await this.findOneByUsername(newUser.username);
-    if (result) {
-      throw new Error.ConflictUserException(newUser.username);
-    }
-    return await this.entityManager.save(newUser);
+    const result = await this.entityManager.transaction(
+      async (entityManager) => {
+        const newUser = new User(createUserDto);
+        const userAlreadyExist = await this.findOneByUsername(newUser.username);
+        if (userAlreadyExist) {
+          throw new Error.ConflictUserException(newUser.username);
+        }
+        return await entityManager.save(newUser);
+      },
+    );
+
+    return result;
   }
   async findOneByUsername(username: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { username } });

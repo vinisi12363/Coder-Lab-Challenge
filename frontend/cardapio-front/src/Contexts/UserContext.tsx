@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 type UserInfo = {
-    name: string;
+    name: string | null | undefined;
     token: string;
 }
 interface userContextType {
