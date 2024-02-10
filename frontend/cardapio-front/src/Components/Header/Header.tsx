@@ -1,5 +1,4 @@
 import "./header.scss"; 
-import { useContextUser } from "../../Contexts/UserContext";
 import { HeaderDefault } from "../HeaderDefault/DefaultHeadet";
 import {HeaderWithUSer} from "../HeaderWithUsername/HeaderWithUSer";
 import { useLocalStorage } from "../../Hooks/useLocalStorage";
@@ -11,8 +10,7 @@ type HeaderProps = {
 }
 
 
-export const  Header:React.FC<HeaderProps> = ({setModalIsOpen, setSignUpModalOpen}) => {
-  const {user} = useContextUser();  
+export const  Header:React.FC<HeaderProps> = ({setModalIsOpen, setSignUpModalOpen}) => { 
   const userLocalStorage = useLocalStorage.getLocalStorage("user");
   
  

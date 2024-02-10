@@ -5,7 +5,7 @@ import { useLocalStorage } from "../../Hooks/useLocalStorage";
 import { Link } from "react-router-dom";
 
 export const HeaderWithUSer: React.FC = () => {
-  const { user, setUpUser } = useContextUser();
+  const { setUpUser } = useContextUser();
   const userLocalStorage = useLocalStorage.getLocalStorage("user");
 
   const logout = () => {
