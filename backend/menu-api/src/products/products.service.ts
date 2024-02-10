@@ -37,7 +37,6 @@ export class ProductsService {
     const result = await this.categoryRepository.find({
       where: { id: In(categoryArray) },
     });
-    console.log(categoryArray.length, result.length);
     if (result.length !== categoryArray.length) {
       throw new Error.CategoriesIdNotFoundException();
     }
