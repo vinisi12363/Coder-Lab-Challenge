@@ -24,11 +24,18 @@ const createProduct = async (product: Product, token: string) => {
 }
 
 const updateProduct = async (id: string, product: Product, token:string) => {
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
-    const response = await ApiConnection.put(`/products/${id}`, product, config);
-    return response.data;
+    console.log(product , id , token);
+    try {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const response = await ApiConnection.patch(`/products/${id}`, product, config);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+  
 }
 
 const deleteProduct = async (id: string , token:string) => {

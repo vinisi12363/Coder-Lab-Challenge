@@ -1,19 +1,18 @@
-import { Title } from "../../Title";
-import { Subtitle } from "../../Subtitle";
+import { Title } from "../../../Title";
+import { Subtitle } from "../../../Subtitle";
 import "./formProduct.scss";
-import { useState } from "react";
-import { useLocalStorage } from "../../../Hooks/useLocalStorage";
-import { toast } from "react-toastify";
-import { ProductApi } from "../../../Api/ProductApi";
-import { Product } from "../../../Types/Product";
-import { useContextProducts } from "../../../Contexts/ProductContext";
-import { Form } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocalStorage } from "../../../../Hooks/useLocalStorage";
+import {toast} from "react-toastify";
+import { ProductApi } from "../../../../Api/ProductApi";
+import { Product } from "../../../../Types/Product";
+import {useContextProducts} from "../../../../Contexts/ProductContext";
 
 type formProductProps = {
-    FormTitle: string
+    FormTitle:string
 }
 
-export const FormProduct: React.FC<formProductProps> = ({ FormTitle }) => {
+export const  FormEditProduct:React.FC<formProductProps> = ({FormTitle}) => {
     const [name, setName] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
@@ -22,44 +21,53 @@ export const FormProduct: React.FC<formProductProps> = ({ FormTitle }) => {
     const [photo, setPhoto] = useState<string>('');
     const storedCategories = useLocalStorage.getLocalStorage("categories");
     const storedUser = useLocalStorage.getLocalStorage("user");
-    const { fetchProducts, products } = useContextProducts();
+    const { selectedProduct, fetchProducts, products} = useContextProducts();
+   
+    useEffect(() => {
+        if(selectedProduct!== null){
+            setName(selectedProduct.name);
+            setQty(selectedProduct.qty);
+            setPrice(selectedProduct.price);
+            setPhoto(selectedProduct.photo);
+            setSelectedCategories(selectedProduct.categories);
+        }
+    }, [selectedProduct]);
+    console.log (name)
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setDisabled(true);
         const checkerResult = categoryChecker();
-        console.log(checkerResult);
-        if (checkerResult && (name.length > 0 && qty > 0 && price > 0 && photo.length > 0)) {
+       
+        if (checkerResult && (name.length > 0 && qty > 0 && price > 0 && photo.length > 0)){
             try {
-                const product: Product = {
+                const product:Product = {
                     name,
                     categories: selectedCategories,
                     qty: qty,
                     price: price,
                     photo: photo,
                 };
+                
+               
 
-                console.log(product);
-
-                const result = await ProductApi.createProduct(product, storedUser.token);
-                console.log(result);
+                const result = await ProductApi.updateProduct(selectedProduct?.id??"", product, storedUser.token);
+              
                 if (result) {
-                    toast.success('Produto cadastrado com sucesso!');
+                    toast.success('Produto editado com sucesso!');
                     useLocalStorage.deleteLocalStorage("products");
                     fetchProducts();
                     useLocalStorage.setLocalStorage("products", products);
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
+                   
                 }
-            } catch (error) {
+            }catch (error) {
                 console.log(error);
             }
-
+           
         } else {
             toast.warning("existem campos inválidos!")
             setTimeout(() => {
-                window.location.reload();
-            }, 4000);
+            window.location.reload();
+            },4000);
         }
 
     };
@@ -68,9 +76,9 @@ export const FormProduct: React.FC<formProductProps> = ({ FormTitle }) => {
             toast.error('You must select at least one category');
             return false;
         }
-        if (selectedCategories.includes(27) || selectedCategories.includes(12) || selectedCategories.includes(13)) {
+        if (selectedCategories.includes(27) || selectedCategories.includes(12) || selectedCategories.includes(13)){
             return true;
-        } else {
+        }else {
             toast.error('You must select at least one parent category  following: "Pizza", "Bebidas" or "Massas"');
             return false;
         }
@@ -96,39 +104,40 @@ export const FormProduct: React.FC<formProductProps> = ({ FormTitle }) => {
             <form onSubmit={(e) => { handleSubmit(e) }}>
                 <label>
                     <Subtitle text="Product name: " textColor="black" textSize="20px"></Subtitle>
-
+                  
                     <input disabled={disabled} type="text" value={name} placeholder={"Nome do Produto"} onChange={(e) => setName(e.target.value)} required />
                 </label>
                 <div>
-                    <Subtitle text="Categories: " textColor="black" textSize="20px"></Subtitle>
-                    {storedCategories.map((category: any) => (
+                <Subtitle text="Categories: " textColor="black" textSize="20px"></Subtitle>
+                    {storedCategories.map((category :any ) => (
                         <label key={category.id}>
-                            <Subtitle text={category.name} textColor="black" textSize="20px"></Subtitle>
-                            <input type="checkbox" disabled={disabled} value={category.id} onChange={handleCategoryChange} />
+                             <Subtitle text={category.name} textColor="black" textSize="20px"></Subtitle>
+                            <input  type="checkbox"  disabled={disabled} value={category.id} onChange={handleCategoryChange} />  
                         </label>
                     ))}
                 </div>
                 <label>
-                    <Subtitle text="Quantity: " textColor="black" textSize="20px"></Subtitle>
-                    <input
-                        type="number"
-                        value={qty}
+                <Subtitle text="Quantity: " textColor="black" textSize="20px"></Subtitle>
+                    <input 
+                        type="number" 
+                        value={qty} 
+                        step='1.00'
                         required
                         disabled={disabled}
                         onChange={(e) => {
                             const inputValue = Number(e.target.value);
                             if (inputValue > 0 && !isNaN(inputValue)) {
-
+                            
                                 setQty(Number(e.target.value));
                             }
-                        }} />
-                </label>
-                {qty <= 0 && (
-                    <span style={{ color: 'red', marginLeft: '5px' }}>
+                        }}  />
+                    </label>
+                 {qty <= 0 && (
+                        <span style={{ color: 'red', marginLeft: '5px' }}>
                         Quantity must be greater than zero.
-                    </span>
-                )}
-                <label>
+                        </span>
+                    )}
+                    <label>
                     <Subtitle text="Price: " textColor="black" textSize="20px"></Subtitle>
                     <input
                         type="number"
@@ -137,7 +146,6 @@ export const FormProduct: React.FC<formProductProps> = ({ FormTitle }) => {
                         disabled={disabled}
                         required
                         onChange={(e) => {
-                           
                             const inputValue = e.target.value;
 
                           
@@ -161,19 +169,19 @@ export const FormProduct: React.FC<formProductProps> = ({ FormTitle }) => {
 
                             }
                         }}
-
+                      
                     />
                     {price <= 0 && (
                         <span style={{ color: 'red', marginLeft: '5px' }}>
-                            Price must be greater than zero.
+                         Price must be greater than zero.
                         </span>
                     )}
-                </label>
+                    </label>
                 <label>
-                    <Subtitle text="Photo URL: " textColor="black" textSize="20px"></Subtitle>
-                    <input type="url" disabled={disabled} value={photo} onChange={(e) => setPhoto(e.target.value)} required />
+                <Subtitle text="Photo URL: " textColor="black" textSize="20px"></Subtitle>
+                    <input type="url"  disabled={disabled} value={photo} onChange={(e) => setPhoto(e.target.value)} required />
                 </label>
-                <button disabled={disabled} type="submit">Submit</button>
+                <button  disabled={disabled} type="submit">Submit</button>
             </form>
         </div>
     );

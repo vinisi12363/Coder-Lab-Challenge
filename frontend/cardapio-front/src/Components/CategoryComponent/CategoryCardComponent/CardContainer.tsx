@@ -7,7 +7,7 @@ import { useLocalStorage } from "../../../Hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { useContextCategory } from "../../../Contexts/CategoryContext";
 export const CardContainerArea = () => {
-  const {chooseCategory} = useContextCategory();
+  const {chooseCategory, categoryId} = useContextCategory();
   const [storedCategories, setStoredCategories] = useState<any>();
   useEffect(() => {
         if(!storedCategories){
@@ -24,7 +24,7 @@ export const CardContainerArea = () => {
                 return(
                         <div
                         key={category.id}
-                        className="productCardContainer"
+                        className={`productCardContainer ${categoryId === category.id && 'verde'}`}
                         onClick={() => {
                          chooseCategory(category.id);
                         }}
@@ -39,7 +39,7 @@ export const CardContainerArea = () => {
                                     alt={category.name}>
                                 </img>
                             </div>
-                            <div className="productTitle">
+                            <div className={`productTitle`}>
                                 <Title 
                                     text={category.name} 
                                     textSize="25px"

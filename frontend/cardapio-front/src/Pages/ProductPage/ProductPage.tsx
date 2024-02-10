@@ -7,7 +7,7 @@ export default function ProductPage(){
         <MainContainer>
                 <HeaderWithUSer></HeaderWithUSer>
                   <div>
-                    <FormProduct></FormProduct>
+                    <FormProduct FormTitle="FORMULÁRIO DE CADASTRO DE PRODUTOS"></FormProduct>
                   </div>
         </MainContainer>
       
